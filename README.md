@@ -1,7 +1,9 @@
 # 611-parallel-algorithms
-Parallel Sorting with Java
+Parallel Algorithms done in Java
 
-## Quick Guide
+## Producer-Consumer Problem
+## Sorting Algorithms
+### Quick Guide
 * PART 1
  - Small test cases
 * Part 2

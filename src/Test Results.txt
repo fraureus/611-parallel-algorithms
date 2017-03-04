@@ -1,0 +1,32 @@
+private static final int[] defaultTestCases = {50000, 100000, 500000, 1000000, 5000000};
+private static final int[] extremeTestCases = {5000000, 10000000, 50000000, 100000000, 500000000};
+
+Default Test Cases, Hajime!
+Execution Time of Sequential Test Case 0: 56 milliseconds(s)
+Execution Time of 		Parallel Test Case 0: 57 milliseconds(s)
+Execution Time of Sequential Test Case 1: 25 milliseconds(s)
+Execution Time of 		Parallel Test Case 1: 31 milliseconds(s)
+Execution Time of Sequential Test Case 2: 185 milliseconds(s)
+Execution Time of 		Parallel Test Case 2: 123 milliseconds(s)
+Execution Time of Sequential Test Case 3: 300 milliseconds(s)
+Execution Time of 		Parallel Test Case 3: 134 milliseconds(s)
+Execution Time of Sequential Test Case 4: 1296 milliseconds(s)
+Execution Time of 		Parallel Test Case 4: 652 milliseconds(s)
+
+
+Extreme Test Cases, Hajime!
+Execution Time of Sequential Test Case 0: 1029 milliseconds(s)
+Execution Time of 		Parallel Test Case 0: 565 milliseconds(s)
+Execution Time of Sequential Test Case 1: 2256 milliseconds(s)
+Execution Time of 		Parallel Test Case 1: 1070 milliseconds(s)
+Execution Time of Sequential Test Case 2: 11366 milliseconds(s)
+Execution Time of 		Parallel Test Case 2: 5588 milliseconds(s)
+Execution Time of Sequential Test Case 3: 23843 milliseconds(s)
+Execution Time of 		Parallel Test Case 3: 11787 milliseconds(s)
+Execution Time of Sequential Test Case 4: Exception in thread "main" java.lang.OutOfMemoryError: Java heap space
+	at sortlib.SequentialMergeSort.merge(SequentialMergeSort.java:36)
+	at sortlib.SequentialMergeSort.sort(SequentialMergeSort.java:23)
+	at sortlib.SequentialMergeSort.sort(SequentialMergeSort.java:10)
+	at Main.runTestCase(Main.java:45)
+	at Main.main(Main.java:33)
+132432 milliseconds(s)

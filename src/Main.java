@@ -1,31 +1,53 @@
+import sortlib.ParallelMergeSort;
 import sortlib.SequentialMergeSort;
 
 public class Main {
 
 	private static final String BLANK = " ";
 	private static final int[] defaultTestCases = {50000, 100000, 500000, 1000000, 5000000};
+	private static final int[] extremeTestCases = {5000000, 10000000, 50000000, 100000000, 500000000};
 	private static GeneralUtils util;
 	private static SequentialMergeSort seqMerge;
+	private static ParallelMergeSort parMerge;
 	
 	// sample use case
 	public static void main(String[] args) {
 		util = new GeneralUtils();
 		seqMerge = new SequentialMergeSort();
+		parMerge = new ParallelMergeSort();
+		int[] testCase;
 		
 		int testCaseNum = 0;
+		System.out.println("Default Test Cases, Hajime!");
 		for(int test: defaultTestCases){
-			runTestCase(test, 2000, false, "Sequential Test Case " + testCaseNum);
+			testCase = util.generateTestCase(test, 200, false);
+			runTestCase(testCase, "Sequential Test Case " + testCaseNum, true);
+			runTestCase(testCase, "\tParallel Test Case " + testCaseNum, false);
+			testCaseNum++;
+		}
+		
+		testCaseNum = 0;
+		System.out.println("Extreme Test Cases, Hajime!");
+		for(int test: extremeTestCases){
+			testCase = util.generateTestCase(test, 200, false);
+			runTestCase(testCase, "Sequential Test Case " + testCaseNum, true);
+			runTestCase(testCase, "\tParallel Test Case " + testCaseNum, false);
 			testCaseNum++;
 		}
 	}
 	
-	public static void runTestCase(int testSize, int testRange, boolean testOffset, String testCaseName){
+	public static void runTestCase(int[] testCase, String testCaseName, boolean isSequential){
 		long startTime =  0L, runTime = 0L;
-		int[] testCase = util.generateTestCase(testSize, testRange, testOffset);
 		
 		try {
-			startTime = System.currentTimeMillis();
-			seqMerge.sort(testCase);
+			if(isSequential){
+				startTime = System.currentTimeMillis();
+				seqMerge.sort(testCase);
+			}
+			else{
+				startTime = System.currentTimeMillis();
+				parMerge.sort(testCase);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{

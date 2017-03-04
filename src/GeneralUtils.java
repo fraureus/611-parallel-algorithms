@@ -8,7 +8,7 @@ public class GeneralUtils {
 	
 	public int[] generateTestCase(int testSize, int maxRange, boolean includeOffset){
 		int[] testCase = new int[testSize];
-		int offset = includeOffset? 0 : 1;
+		int offset = includeOffset ? 0 : 1;
 		Random rand = new Random();
 		
 //		System.out.printf("generateTestCase(): Creating test cases...\n"

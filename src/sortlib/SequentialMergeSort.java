@@ -11,7 +11,7 @@ public class SequentialMergeSort {
 //		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
 	}
 	
-	private void sort(int[] listToSort, int startIndex, int endIndex){
+	protected void sort(int[] listToSort, int startIndex, int endIndex){
 		if(endIndex - startIndex < 1){
 			return;
 		}
@@ -25,7 +25,7 @@ public class SequentialMergeSort {
 	
 	
 	// merge routine using a sentinel
-	private void merge(int[] listToMerge, int startIndex, int midpoint, int endIndex){
+	protected void merge(int[] listToMerge, int startIndex, int midpoint, int endIndex){
 		
 		// size of each half
 		int leftSublistSize = midpoint - startIndex + 1;

@@ -11,12 +11,16 @@ public class Main {
 	private static ParallelMergeSort parMerge;
 	
 	// sample use case
+	// TODO: Refactor unit test structure
 	public static void main(String[] args) {
 		util = new GeneralUtils();
 		seqMerge = new SequentialMergeSort();
 		parMerge = new ParallelMergeSort();
 		int[] testCase;
 		
+		/**
+		 * PART 1
+		 */
 		int testCaseNum = 0;
 		System.out.println("Default Test Cases, Hajime!");
 		for(int test: defaultTestCases){
@@ -25,15 +29,24 @@ public class Main {
 			runTestCase(testCase, "\tParallel Test Case " + testCaseNum, false);
 			testCaseNum++;
 		}
+		/**
+		 * END OF PART 1
+		 */
 		
-		testCaseNum = 0;
-		System.out.println("Extreme Test Cases, Hajime!");
-		for(int test: extremeTestCases){
-			testCase = util.generateTestCase(test, 200, false);
-			runTestCase(testCase, "Sequential Test Case " + testCaseNum, true);
-			runTestCase(testCase, "\tParallel Test Case " + testCaseNum, false);
-			testCaseNum++;
-		}
+		/**
+		 * PART 2 (Uncomment to test below)
+		 */
+//		testCaseNum = 0;
+//		System.out.println("Extreme Test Cases, Hajime!");
+//		for(int test: extremeTestCases){
+//			testCase = util.generateTestCase(test, 200, false);
+//			runTestCase(testCase, "Sequential Test Case " + testCaseNum, true);
+//			runTestCase(testCase, "\tParallel Test Case " + testCaseNum, false);
+//			testCaseNum++;
+//		}
+		/**
+		 * END OF PART 2
+		 */
 	}
 	
 	public static void runTestCase(int[] testCase, String testCaseName, boolean isSequential){

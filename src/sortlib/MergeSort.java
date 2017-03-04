@@ -1,6 +1,6 @@
-package mergelib;
+package sortlib;
 
-public class MergeSorter {
+public class MergeSort {
 	public void sort(int[] listToSort) throws Exception{
 		if(listToSort.length <= 1){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");

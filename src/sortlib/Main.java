@@ -2,8 +2,6 @@ package sortlib;
 import utils.GeneralUtils;
 
 public class Main {
-
-	private static final String BLANK = " ";
 	private static final int[] defaultTestCases = {50000, 100000, 500000, 1000000, 5000000};
 	private static final int[] extremeTestCases = {5000000, 10000000, 50000000, 100000000, 500000000};
 	private static GeneralUtils util;

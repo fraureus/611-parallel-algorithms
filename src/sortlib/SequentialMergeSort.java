@@ -18,8 +18,13 @@ public class SequentialMergeSort {
 		
 		// get midpoint then identify left & right half to sort, finally merge values in the end
 		int midpoint = (int)Math.floor(startIndex + endIndex) / 2;
+		
+		// left half
 		sort(listToSort, startIndex, midpoint);
+		// right half
 		sort(listToSort, midpoint + 1, endIndex);
+		
+		// merge routine to combine the left and right halves
 		merge(listToSort, startIndex, midpoint, endIndex);
 	}
 	
@@ -54,7 +59,7 @@ public class SequentialMergeSort {
 			// if left item is less than or equal to right item (or right item equals the sentinel value), 
 			// then assign left item & move pointer to next left index
 			if(leftSublist[leftIndex] <= rightSublist[rightIndex]
-					|| rightSublist.equals(-1))
+					|| rightSublist.equals(Integer.MAX_VALUE))
 			{
 				listToMerge[i] = leftSublist[leftIndex];
 				leftIndex++;

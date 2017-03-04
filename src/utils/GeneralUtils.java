@@ -7,6 +7,7 @@ public class GeneralUtils {
 	private static final String NEW_LINE = "\n";
 	private static final String TAB = "\t";
 	
+	// generate test case based on given parameters
 	public int[] generateTestCase(int testSize, int maxRange, boolean includeOffset){
 		int[] testCase = new int[testSize];
 		int offset = includeOffset ? 0 : 1;
@@ -41,10 +42,12 @@ public class GeneralUtils {
 		return isNotNullOrEmpty(pwettyOutput.toString()) ? pwettyOutput.toString() : EMPTY_STRING;
 	}
 	
+	// formats the output of a sorting algorithm
 	public String prettifyOutput(int[] testResult){
 		return prettifyOutput(testResult, -1);
 	}
 	
+	// checks for null or empty strings
 	public boolean isNotNullOrEmpty(String testString){
 		
 		if(testString.length() > 0 && testString != null){
@@ -54,6 +57,7 @@ public class GeneralUtils {
 		return false;
 	}
 	
+	// computes time difference
 	public long getTimeDifference(long startTime){
 		return System.currentTimeMillis() - startTime;
 	}

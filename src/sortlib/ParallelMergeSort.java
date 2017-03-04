@@ -36,6 +36,7 @@ public class ParallelMergeSort extends SequentialMergeSort {
 			}
 		});
 		
+		// begin sorting both halves simultaneously
 		leftThread.start();
 		rightThread.start();
 		

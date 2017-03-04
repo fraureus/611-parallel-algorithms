@@ -1,5 +1,5 @@
-import sortlib.ParallelMergeSort;
-import sortlib.SequentialMergeSort;
+package sortlib;
+import utils.GeneralUtils;
 
 public class Main {
 

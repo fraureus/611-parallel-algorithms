@@ -1,9 +1,9 @@
 package sortlib;
 
 public class ParallelMergeSort extends SequentialMergeSort {
-	private int[] listToSort;
+	private Integer[] listToSort;
 	
-	public void sort(int[] listToSort) throws Exception{
+	public void sort(Integer[] listToSort) throws Exception{
 		if(listToSort.length <= 1){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
 		}
@@ -13,7 +13,7 @@ public class ParallelMergeSort extends SequentialMergeSort {
 //		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
 	}
 	
-	private void parallelSort(int[] listToSort, int startIndex, int endIndex) throws InterruptedException{
+	private void parallelSort(Integer[] listToSort, int startIndex, int endIndex) throws InterruptedException{
 		if(endIndex - startIndex < 1){
 			return;
 		}

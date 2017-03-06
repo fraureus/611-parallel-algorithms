@@ -1,7 +1,7 @@
 package sortlib;
 
 public class SequentialMergeSort {
-	public void sort(int[] listToSort) throws Exception{
+	public void sort(Integer[] listToSort) throws Exception{
 		if(listToSort.length <= 1){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
 		}
@@ -11,7 +11,7 @@ public class SequentialMergeSort {
 //		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
 	}
 	
-	protected void sort(int[] listToSort, int startIndex, int endIndex){
+	protected void sort(Integer[] listToSort, int startIndex, int endIndex){
 		if(endIndex - startIndex < 1){
 			return;
 		}
@@ -30,15 +30,15 @@ public class SequentialMergeSort {
 	
 	
 	// merge routine using a sentinel
-	protected void merge(int[] listToMerge, int startIndex, int midpoint, int endIndex){
+	protected void merge(Integer[] listToMerge, int startIndex, int midpoint, int endIndex){
 		
 		// size of each half
 		int leftSublistSize = midpoint - startIndex + 1;
 		int rightSublistSize = endIndex - midpoint;
 
 		// initializing left & right half
-		int[] leftSublist = new int[leftSublistSize+1];
-		int[] rightSublist = new int[rightSublistSize+1];
+		Integer[] leftSublist = new Integer[leftSublistSize+1];
+		Integer[] rightSublist = new Integer[rightSublistSize+1];
 		
 		// copy to left and right half values from initial list
 		for(int i = 0; i < leftSublistSize; i++){

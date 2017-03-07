@@ -34,7 +34,6 @@ public class GeneralUtils{
 //		System.out.println("generateTestCase(): Done creating test cases!\n");
 		
 	    Comparator<Integer> comparator = new Comparator<Integer>() {
-
 	        @Override
 	        public int compare(Integer o1, Integer o2) {
 	            return o2.compareTo(o1);
@@ -96,7 +95,7 @@ public class GeneralUtils{
 	 * @throws IOException : throws this if there is an error in writing to the file
 	 */
 	public void saveResultsToCsvFile(HashMap<String, String> hashMap, String optionalFileName) throws IOException {
-		FileWriter writer = new FileWriter("output" + String.valueOf(System.currentTimeMillis()) + ".csv");
+		FileWriter writer = new FileWriter("output-" + String.valueOf(System.currentTimeMillis()) + ".csv");
 		List<String> keys = new ArrayList<String>(hashMap.keySet());
 		Collections.sort(keys, new Comparator<String>() {
 			@Override

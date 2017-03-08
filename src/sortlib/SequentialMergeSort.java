@@ -1,6 +1,8 @@
 package sortlib;
 
 public class SequentialMergeSort {
+	protected Integer[] listToSort;
+	
 	public void sort(Integer[] listToSort) throws Exception{
 		if(listToSort.length <= 1){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
@@ -30,7 +32,7 @@ public class SequentialMergeSort {
 	
 	
 	// merge routine using a sentinel
-	protected void merge(Integer[] listToMerge, int startIndex, int midpoint, int endIndex){
+	protected static void merge(Integer[] listToMerge, int startIndex, int midpoint, int endIndex){
 		
 		// size of each half
 		int leftSublistSize = midpoint - startIndex + 1;

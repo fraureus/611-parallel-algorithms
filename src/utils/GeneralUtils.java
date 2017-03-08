@@ -24,8 +24,8 @@ public class GeneralUtils{
 		int offset = includeOffset ? 0 : 1;
 		Random rand = new Random();
 		
-//		System.out.printf("generateTestCase(): Creating test cases...\n"
-//				+ "\tTest Size: %d\n\tMax Value: %d\n\tOffset: %d\n", testSize, maxRange, offset);
+		System.out.printf("generateTestCase(): Creating test cases...\n"
+				+ "\tTest Size: %d\n\tMax Value: %d\n\tOffset: %d\n", testSize, maxRange, offset);
 		for(int i = 0; i < testCase.length; i++)
 		{
 			testCase[i] = rand.nextInt(maxRange) + offset;
@@ -94,9 +94,10 @@ public class GeneralUtils{
 	 * @param optionalFileName : if blank, results are saved in a file with a auto-generated name
 	 * @throws IOException : throws this if there is an error in writing to the file
 	 */
-	public void saveResultsToCsvFile(HashMap<String, String> hashMap, String optionalFileName) throws IOException {
+	public void saveResultsToCsvFile(HashMap<String, String> hashMap, String optionalFileName, long testSize) throws IOException {
 		FileWriter writer = new FileWriter("output-" + String.valueOf(System.currentTimeMillis()) + ".csv");
 		List<String> keys = new ArrayList<String>(hashMap.keySet());
+		long finalValue = 0L;
 		Collections.sort(keys, new Comparator<String>() {
 			@Override
 			public int compare(String o1, String o2) {
@@ -108,7 +109,8 @@ public class GeneralUtils{
 		writer.write("test_key,run_time (ms),test_size (n)\n");
 		for (String key : keys) {
 			splitKey = key.split("_");
-			writer.write(key + "," + hashMap.get(key).toString() + "," + splitKey[3] + "\n");
+			finalValue =  Long.parseLong(hashMap.get(key).toString())/(testSize-10);
+			writer.write(key + "," + finalValue + "," + splitKey[3] + "\n");
 		}
 		writer.close();
 	}

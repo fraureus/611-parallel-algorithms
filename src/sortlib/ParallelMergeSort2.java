@@ -1,17 +1,57 @@
 package sortlib;
 
-public class ParallelMergeSort extends SequentialMergeSort {
-	private Integer[] listToSort;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class ParallelMergeSort2 extends SequentialMergeSort {
+	
+//	private static ExecutorService executorService = Executors.newFixedThreadPool(16);
 	
 	public void sort(Integer[] listToSort) throws Exception{
-		if(listToSort.length <= 1){
+		if(listToSort.length <= 1 || listToSort == null){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
 		}
 		
 //		System.out.println("[Sequential Merge Sort] Initialization...");
+//		executorService.submit(new InnerMergeSort(listToSort, 0, listToSort.length));
 		parallelSort(listToSort, 0, listToSort.length-1);
 //		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
 	}
+	
+/*	private class InnerMergeSort implements Runnable{
+
+		private int startIndex, endIndex;
+		private Integer[] listToSort;
+		
+		public InnerMergeSort(Integer[] listToSort, int startIndex, int endIndex){
+			this.listToSort = listToSort;
+			this.startIndex = startIndex;
+			this.endIndex = endIndex;
+		}
+		
+		@Override
+		public void run() {
+			if(endIndex - startIndex < 1){
+				return;
+			}
+			
+			// get midpoint then identify left & right half to sort, finally merge values in the end
+			int midpoint = (int)Math.floor(startIndex + endIndex) / 2;
+			
+			try {
+				executorService.submit(new InnerMergeSort(listToSort, startIndex, midpoint)).get();
+				executorService.submit(new InnerMergeSort(listToSort, midpoint + 1, endIndex)).get();
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
+			}
+
+			merge(listToSort, startIndex, midpoint, endIndex);
+			executorService.shutdownNow();
+			executorService.awaitTermination();
+		}
+		
+	}*/
 	
 	private void parallelSort(Integer[] listToSort, int startIndex, int endIndex) throws InterruptedException{
 		if(endIndex - startIndex < 1){
@@ -19,7 +59,6 @@ public class ParallelMergeSort extends SequentialMergeSort {
 		}
 		
 		// get midpoint then identify left & right half to sort, finally merge values in the end
-		this.listToSort = listToSort;
 		int midpoint = (int)Math.floor(startIndex + endIndex) / 2;
 		
 		// less costly since only two main threads are used as seen below

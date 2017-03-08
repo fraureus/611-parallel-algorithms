@@ -19,22 +19,29 @@ public class Main {
 	private static final String BEST_CASE_STR = "Best Cases";
 	private static final String AVERAGE_CASE_STR = "Average Cases";
 	private static final String WORST_CASE_STR = "Worst Cases";
+	private static final int SEQUENTIAL = 0;
+	private static final int PARALLEL2 = 1;
+	private static final int PARALLEL4 = 2;
+	
 	
 	/**
 	 *  Private Settings
 	 */
-	private static final boolean TO_PRINT = false;
+	private static final boolean TO_PRINT = true;
 	private static final boolean TO_SAVE = true;
+	private static final int MAX_ITER = 50;
 	
 	/**
 	 *  Private Variables
 	 */
 	private static GeneralUtils util;
 	private static SequentialMergeSort seqMerge;
-	private static ParallelMergeSort parMerge;
+	private static ParallelMergeSort2 parMerge2;
+	private static ParallelMergeSort4 parMerge4;
 	
 	private static Integer[] sequentialTestCase;
 	private static Integer[] parallelTestCase;
+	private static Integer[] parallelTestCase1;
 	private static int testCaseNum;
 	private static HashMap<String, String> resultsMap;
 	
@@ -54,9 +61,11 @@ public class Main {
 	public static void main(String[] args) {
 		init();
 		
-		executeTestCases(finalTestCases, BEST_CASE, BEST_CASE_STR);
-		executeTestCases(finalTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
-		executeTestCases(finalTestCases, WORST_CASE, WORST_CASE_STR);
+		for(int i = 0; i < MAX_ITER; i++){
+			executeTestCases(finalTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
+		}
+//		executeTestCases(finalTestCases, BEST_CASE, BEST_CASE_STR);
+//		executeTestCases(defaultTestCases, WORST_CASE, WORST_CASE_STR);
 		
 		System.out.println("Test Cases Done!");
 		
@@ -66,7 +75,7 @@ public class Main {
 				 * if it is blank, the file would be saved with a generated filename
 				 * else, it uses your provided filename
 				 */
-				util.saveResultsToCsvFile(resultsMap, ""); 
+				util.saveResultsToCsvFile(resultsMap, "max-iter-50", MAX_ITER); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,7 +84,8 @@ public class Main {
 	private static void init(){
 		util = new GeneralUtils();
 		seqMerge = new SequentialMergeSort();
-		parMerge = new ParallelMergeSort();
+		parMerge2 = new ParallelMergeSort2();
+		parMerge4 = new ParallelMergeSort4();
 		resultsMap = new HashMap<String, String>();
 		testCaseNum = 0;
 	}
@@ -85,11 +95,13 @@ public class Main {
 		System.out.println(testName + ", hajime!\n");
 		
 		for(int test: testCases){
-			sequentialTestCase = util.generateTestCase(test, 200, false, mode);
+			sequentialTestCase = util.generateTestCase(test, 1000000, false, mode);
 			parallelTestCase = Arrays.copyOf(sequentialTestCase, sequentialTestCase.length);
+			parallelTestCase1 = Arrays.copyOf(sequentialTestCase, sequentialTestCase.length);
 			
-			runTestCase(sequentialTestCase, "Sequential Test Case " + testCaseNum + ": " + test, true, mode);
-			runTestCase(parallelTestCase, "[Parallel] Test Case " + testCaseNum + ": " + test, false, mode);
+			runTestCase(sequentialTestCase, "Sequential Test Case " + testCaseNum + ": " + test, SEQUENTIAL, mode);
+			runTestCase(parallelTestCase, "(Parallel) Test Case [2 threads] " + testCaseNum + ": " + test, PARALLEL2, mode);
+			runTestCase(parallelTestCase1, "(Parallel) Test Case [4 threads] " + testCaseNum + ": " + test, PARALLEL4, mode);
 			
 			testCaseNum++;
 		}
@@ -97,31 +109,48 @@ public class Main {
 		System.out.println(testName + " are done.\n");
 	}
 	
-	private static void runTestCase(Integer[] testCase, String testCaseName, boolean isSequential, int mode){
+	private static void runTestCase(Integer[] testCase, String testCaseName, int sorter, int mode){
 		long startTime =  0L, runTime = 0L;
 		String lblPrefix = "";
-		System.out.println("Test Case:\n" + util.prettifyOutput(testCase, 10));
+		System.out.println("Executing Test Case: " + testCaseName);
+		System.out.println("Test Data:\n" + util.prettifyOutput(testCase, 10));
 		try {
-			if(isSequential){
+			if(sorter == SEQUENTIAL){
 				lblPrefix = "SEQ";
 				startTime = System.currentTimeMillis();
 				seqMerge.sort(testCase);
 			}
-			else{
-				lblPrefix = "PAR";
+			else if(sorter == PARALLEL2){
+				lblPrefix = "PAR2";
 				startTime = System.currentTimeMillis(); // added duplicate to get actual start time from this point
-				parMerge.sort(testCase);
+				parMerge2.sort(testCase);
+			}
+			else if(sorter == PARALLEL4){
+				lblPrefix = "PAR4";
+				startTime = System.currentTimeMillis(); // added duplicate to get actual start time from this point
+				parMerge4.sort(testCase);
+			}else{
+				System.out.println("[WARNING] chosen algorithm does not exist!");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally{
 			runTime = util.getTimeDifference(startTime);
 			System.out.printf("Execution Time of %s: %s milliseconds(s)\n", testCaseName, runTime);
-			resultsMap.put(lblPrefix + "_" + getLabel(mode) + "_" + testCaseNum + "_" + String.valueOf(testCase.length), String.valueOf(runTime));
+			
+			if(testCaseNum > 10){
+				String key = lblPrefix + "_" + getLabel(mode) + "_" + testCaseNum + "_" + String.valueOf(testCase.length);
+				if(resultsMap.get(key) != null){
+					runTime += Long.parseLong(String.valueOf(resultsMap.get(key)));
+					resultsMap.put(key, String.valueOf(runTime));
+				}else{
+					resultsMap.put(key, String.valueOf(runTime));
+				}
+			}
 		}
 		
 		if(TO_PRINT)
-			System.out.println("Output:\n" + util.prettifyOutput(testCase, 10));
+			System.out.println("Output:\n" + util.prettifyOutput(testCase, 50));
 	}
 	
 	private static String getLabel(int mode){

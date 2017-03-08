@@ -62,10 +62,10 @@ public class Main {
 		init();
 		
 		for(int i = 0; i < MAX_ITER; i++){
-			executeTestCases(finalTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
+			executeTestCases(finalTestCases, BEST_CASE, BEST_CASE_STR);
+//			executeTestCases(finalTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
+//			executeTestCases(finalTestCases, WORST_CASE, WORST_CASE_STR);
 		}
-//		executeTestCases(finalTestCases, BEST_CASE, BEST_CASE_STR);
-//		executeTestCases(defaultTestCases, WORST_CASE, WORST_CASE_STR);
 		
 		System.out.println("Test Cases Done!");
 		
@@ -75,7 +75,7 @@ public class Main {
 				 * if it is blank, the file would be saved with a generated filename
 				 * else, it uses your provided filename
 				 */
-				util.saveResultsToCsvFile(resultsMap, "max-iter-50", MAX_ITER); 
+				util.saveResultsToCsvFile(resultsMap, "50_iterations_best", MAX_ITER); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

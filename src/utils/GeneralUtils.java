@@ -95,7 +95,14 @@ public class GeneralUtils{
 	 * @throws IOException : throws this if there is an error in writing to the file
 	 */
 	public void saveResultsToCsvFile(HashMap<String, String> hashMap, String optionalFileName, long testSize) throws IOException {
-		FileWriter writer = new FileWriter("output-" + String.valueOf(System.currentTimeMillis()) + ".csv");
+		String fileName = EMPTY_STRING;
+		
+		if(optionalFileName.length() > 0){
+			fileName = optionalFileName + ".csv";
+		}else{
+			fileName = "output-" + String.valueOf(System.currentTimeMillis()) + ".csv";
+		}
+		FileWriter writer = new FileWriter(fileName);
 		List<String> keys = new ArrayList<String>(hashMap.keySet());
 		long finalValue = 0L;
 		Collections.sort(keys, new Comparator<String>() {

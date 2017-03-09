@@ -94,8 +94,12 @@ public class GeneralUtils{
 	 * @param optionalFileName : if blank, results are saved in a file with a auto-generated name
 	 * @throws IOException : throws this if there is an error in writing to the file
 	 */
-	public void saveResultsToCsvFile(HashMap<String, String> hashMap, String optionalFileName, long testSize) throws IOException {
+	public void saveResultsToCsvFile(HashMap<String, String> hashMap, String optionalFileName, long testSize, long offset) throws IOException {
 		String fileName = EMPTY_STRING;
+		
+		String experimentEndTime = LocalDateTime.now().toString();
+		System.out.println("Experiment End Time: " + experimentEndTime);
+		hashMap.put("END_TIME", experimentEndTime);
 		
 		if(optionalFileName.length() > 0){
 			fileName = optionalFileName + ".csv";
@@ -113,11 +117,17 @@ public class GeneralUtils{
 		});
 		
 		String[] splitKey;
+		writer.write("START_TIME," + hashMap.get("START_TIME").toString() + ",\n");
+		writer.write("END_TIME," + hashMap.get("END_TIME").toString() + ",\n");
+		writer.write("MAX_ITER," + testSize + ",\n");
+		writer.write("TRIM_OFFSET," + offset + ",\n\n");
 		writer.write("test_key,run_time (ms),test_size (n)\n");
 		for (String key : keys) {
-			splitKey = key.split("_");
-			finalValue =  Long.parseLong(hashMap.get(key).toString())/(testSize-10);
-			writer.write(key + "," + finalValue + "," + splitKey[3] + "\n");
+			if(!key.equalsIgnoreCase("START_TIME") && !key.equalsIgnoreCase("END_TIME")){
+				splitKey = key.split("_");
+				finalValue =  Long.parseLong(hashMap.get(key).toString());
+				writer.write(key + "," + String.valueOf(finalValue) + "," + splitKey[3] + "\n");
+			}
 		}
 		writer.close();
 	}

@@ -1,5 +1,6 @@
 package sortlib;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -22,7 +23,7 @@ public class Main {
 	private static final int SEQUENTIAL = 0;
 	private static final int PARALLEL2 = 1;
 	private static final int PARALLEL4 = 2;
-	
+	private static final String HBAR = "#######################################";
 	
 	/**
 	 *  Private Settings
@@ -30,6 +31,7 @@ public class Main {
 	private static final boolean TO_PRINT = true;
 	private static final boolean TO_SAVE = true;
 	private static final int MAX_ITER = 50;
+	private static final int TRIM_VALUE = 10;
 	
 	/**
 	 *  Private Variables
@@ -43,13 +45,14 @@ public class Main {
 	private static Integer[] parallelTestCase;
 	private static Integer[] parallelTestCase1;
 	private static int testCaseNum;
+	public static int testCaseIter;
 	private static HashMap<String, String> resultsMap;
 	
 	/**
 	 * Test Cases
 	 */
 	private static final int[] tinyTestCases = {10, 20, 30, 40, 50};
-	private static final int[] defaultTestCases = {50000, 100000, 500000, 1000000, 5000000};
+	private static final int[] defaultTestCases = {50000, 100000, 500000, 1000000};
 	private static final int[] extremeTestCases = {5000000, 10000000, 50000000, 100000000, 500000000};
 	private static final int[] finalTestCases = {1000, 5000,
 		10000, 50000,
@@ -59,26 +62,59 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
+		int[] chosenTestCases = finalTestCases;
+		
+		// BEST CASE SECTION
 		init();
-		
-		for(int i = 0; i < MAX_ITER; i++){
-			executeTestCases(finalTestCases, BEST_CASE, BEST_CASE_STR);
-//			executeTestCases(finalTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
-//			executeTestCases(finalTestCases, WORST_CASE, WORST_CASE_STR);
+		for (int i = 0; i < MAX_ITER; i++) {
+			testCaseIter = i;
+			System.out.println(HBAR + "\n");
+			System.out.println(BEST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+			executeTestCases(chosenTestCases, BEST_CASE, BEST_CASE_STR);
 		}
-		
-		System.out.println("Test Cases Done!");
-		
 		try {
-			if(TO_SAVE)
-				/* FYI: Second argument takes in an optional filename
-				 * if it is blank, the file would be saved with a generated filename
+			if (TO_SAVE)
+				/*
+				 * FYI: Second argument takes in an optional filename if it is
+				 * blank, the file would be saved with a generated filename
 				 * else, it uses your provided filename
 				 */
-				util.saveResultsToCsvFile(resultsMap, "50_iterations_best", MAX_ITER); 
+				util.saveResultsToCsvFile(resultsMap, "50_iterations_best", MAX_ITER, 0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		// AVERAGE CASE SECTION
+		init();
+		for (int i = 0; i < MAX_ITER; i++) {
+			testCaseIter = i;
+			System.out.println(HBAR + "\n");
+			System.out.println(AVERAGE_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+			executeTestCases(chosenTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
+		}
+		try {
+			if (TO_SAVE)
+				util.saveResultsToCsvFile(resultsMap, "50_iterations_avg", MAX_ITER, 0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		// WORST CASE SECTION
+		init();
+		for (int i = 0; i < MAX_ITER; i++) {
+			testCaseIter = i;
+			System.out.println(HBAR + "\n");
+			System.out.println(WORST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+			executeTestCases(chosenTestCases, WORST_CASE, WORST_CASE_STR);
+		}
+		try {
+			if (TO_SAVE)
+				util.saveResultsToCsvFile(resultsMap, "50_iterations_worst", MAX_ITER, 0);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.println("[-END-] Test Experiment Done!");
 	}
 	
 	private static void init(){
@@ -88,6 +124,11 @@ public class Main {
 		parMerge4 = new ParallelMergeSort4();
 		resultsMap = new HashMap<String, String>();
 		testCaseNum = 0;
+		testCaseIter = 0;
+		
+		String experimentStartTime = LocalDateTime.now().toString();
+		System.out.println("Experimnent Start Time: " + experimentStartTime);
+		resultsMap.put("START_TIME", experimentStartTime);
 	}
 	
 	private static void executeTestCases(int[] testCases, int mode, String testName){
@@ -95,6 +136,7 @@ public class Main {
 		System.out.println(testName + ", hajime!\n");
 		
 		for(int test: testCases){
+			System.out.println("[INIT] ITERATION #" + (testCaseIter));
 			sequentialTestCase = util.generateTestCase(test, 1000000, false, mode);
 			parallelTestCase = Arrays.copyOf(sequentialTestCase, sequentialTestCase.length);
 			parallelTestCase1 = Arrays.copyOf(sequentialTestCase, sequentialTestCase.length);
@@ -112,7 +154,7 @@ public class Main {
 	private static void runTestCase(Integer[] testCase, String testCaseName, int sorter, int mode){
 		long startTime =  0L, runTime = 0L;
 		String lblPrefix = "";
-		System.out.println("Executing Test Case: " + testCaseName);
+		System.out.println("[SORTING] Executing Test Case: " + testCaseName);
 		System.out.println("Test Data:\n" + util.prettifyOutput(testCase, 10));
 		try {
 			if(sorter == SEQUENTIAL){
@@ -138,7 +180,7 @@ public class Main {
 			runTime = util.getTimeDifference(startTime);
 			System.out.printf("Execution Time of %s: %s milliseconds(s)\n", testCaseName, runTime);
 			
-			if(testCaseNum > 10){
+			if(testCaseIter >= TRIM_VALUE){
 				String key = lblPrefix + "_" + getLabel(mode) + "_" + testCaseNum + "_" + String.valueOf(testCase.length);
 				if(resultsMap.get(key) != null){
 					runTime += Long.parseLong(String.valueOf(resultsMap.get(key)));
@@ -150,7 +192,7 @@ public class Main {
 		}
 		
 		if(TO_PRINT)
-			System.out.println("Output:\n" + util.prettifyOutput(testCase, 50));
+			System.out.println("[DONE SORTING] Output:\n" + util.prettifyOutput(testCase, 50));
 	}
 	
 	private static String getLabel(int mode){

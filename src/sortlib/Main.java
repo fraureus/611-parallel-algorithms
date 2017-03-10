@@ -39,6 +39,7 @@ public class Main {
 	private static GeneralUtils util;
 	private static SequentialMergeSort seqMerge;
 	private static ParallelMergeSort2 parMerge2;
+	private static ParallelMergeSort2X parMerge2x;
 	private static ParallelMergeSort4 parMerge4;
 	
 	private static Integer[] sequentialTestCase;
@@ -52,37 +53,37 @@ public class Main {
 	 * Test Cases
 	 */
 	private static final int[] tinyTestCases = {10, 20, 30, 40, 50};
-	private static final int[] defaultTestCases = {50000, 100000, 500000, 1000000};
-	private static final int[] extremeTestCases = {5000000, 10000000, 50000000, 100000000, 500000000};
-	private static final int[] finalTestCases = {1000, 5000,
-		10000, 50000,
-		100000, 500000,
-		1000000, 5000000,
-		10000000, 50000000};
+	private static final int[] defaultTestCases = {50_000, 100_000, 500_000, 1_000_000};
+	private static final int[] extremeTestCases = {5_000_000, 10_000_000, 50_000_000, 100_000_000, 500_000_000};
+	private static final int[] finalTestCases = { 1_000, 5_000, 
+		10_000, 50_000, 
+		100_000, 500_000, 
+		1_000_000, 5_000_000, 
+		10_000_000, 50_000_000};
 	
 	
 	public static void main(String[] args) {
 		int[] chosenTestCases = finalTestCases;
 		
 		// BEST CASE SECTION
-		init();
-		for (int i = 0; i < MAX_ITER; i++) {
-			testCaseIter = i;
-			System.out.println(HBAR + "\n");
-			System.out.println(BEST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
-			executeTestCases(chosenTestCases, BEST_CASE, BEST_CASE_STR);
-		}
-		try {
-			if (TO_SAVE)
-				/*
-				 * FYI: Second argument takes in an optional filename if it is
-				 * blank, the file would be saved with a generated filename
-				 * else, it uses your provided filename
-				 */
-				util.saveResultsToCsvFile(resultsMap, "50_iterations_best", MAX_ITER, 0);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		init();
+//		for (int i = 0; i < MAX_ITER; i++) {
+//			testCaseIter = i;
+//			System.out.println(HBAR + "\n");
+//			System.out.println(BEST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+//			executeTestCases(chosenTestCases, BEST_CASE, BEST_CASE_STR);
+//		}
+//		try {
+//			if (TO_SAVE)
+//				/*
+//				 * FYI: Second argument takes in an optional filename if it is
+//				 * blank, the file would be saved with a generated filename
+//				 * else, it uses your provided filename
+//				 */
+//				util.saveResultsToCsvFile(resultsMap, "50_iterations_best_exe", MAX_ITER, 0);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 
 		// AVERAGE CASE SECTION
 		init();
@@ -94,25 +95,25 @@ public class Main {
 		}
 		try {
 			if (TO_SAVE)
-				util.saveResultsToCsvFile(resultsMap, "50_iterations_avg", MAX_ITER, 0);
+				util.saveResultsToCsvFile(resultsMap, "50_iterations_avg_exe", MAX_ITER, 0);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		// WORST CASE SECTION
-		init();
-		for (int i = 0; i < MAX_ITER; i++) {
-			testCaseIter = i;
-			System.out.println(HBAR + "\n");
-			System.out.println(WORST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
-			executeTestCases(chosenTestCases, WORST_CASE, WORST_CASE_STR);
-		}
-		try {
-			if (TO_SAVE)
-				util.saveResultsToCsvFile(resultsMap, "50_iterations_worst", MAX_ITER, 0);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		init();
+//		for (int i = 0; i < MAX_ITER; i++) {
+//			testCaseIter = i;
+//			System.out.println(HBAR + "\n");
+//			System.out.println(WORST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+//			executeTestCases(chosenTestCases, WORST_CASE, WORST_CASE_STR);
+//		}
+//		try {
+//			if (TO_SAVE)
+//				util.saveResultsToCsvFile(resultsMap, "50_iterations_worst_exe", MAX_ITER, 0);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 		
 		System.out.println("[-END-] Test Experiment Done!");
 	}
@@ -121,13 +122,14 @@ public class Main {
 		util = new GeneralUtils();
 		seqMerge = new SequentialMergeSort();
 		parMerge2 = new ParallelMergeSort2();
+		parMerge2x = new ParallelMergeSort2X();
 		parMerge4 = new ParallelMergeSort4();
 		resultsMap = new HashMap<String, String>();
 		testCaseNum = 0;
 		testCaseIter = 0;
 		
 		String experimentStartTime = LocalDateTime.now().toString();
-		System.out.println("Experimnent Start Time: " + experimentStartTime);
+		System.out.println("Experiment Start Time: " + experimentStartTime);
 		resultsMap.put("START_TIME", experimentStartTime);
 	}
 	

@@ -1,26 +1,25 @@
 package sortlib;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class ParallelMergeSort2 extends SequentialMergeSort {
 	
-//	private static ExecutorService executorService = Executors.newFixedThreadPool(16);
 	
 	public void sort(Integer[] listToSort) throws Exception{
 		if(listToSort.length <= 1 || listToSort == null){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
 		}
 		
+		ForkJoinPool esPool = new ForkJoinPool();	
+		
 //		System.out.println("[Sequential Merge Sort] Initialization...");
-//		executorService.submit(new InnerMergeSort(listToSort, 0, listToSort.length));
-		parallelSort(listToSort, 0, listToSort.length-1);
+		esPool.invoke(new InnerMergeSort(listToSort, 0, listToSort.length-1));
+//		parallelSort(listToSort, 0, listToSort.length-1);
 //		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
 	}
 	
-/*	private class InnerMergeSort implements Runnable{
-
+	private class InnerMergeSort extends RecursiveAction{
+		private static final int NON_PARALLEL_SORT_LENGTH = 100_000;
 		private int startIndex, endIndex;
 		private Integer[] listToSort;
 		
@@ -31,27 +30,35 @@ public class ParallelMergeSort2 extends SequentialMergeSort {
 		}
 		
 		@Override
-		public void run() {
+		protected void compute() {
 			if(endIndex - startIndex < 1){
 				return;
 			}
 			
-			// get midpoint then identify left & right half to sort, finally merge values in the end
-			int midpoint = (int)Math.floor(startIndex + endIndex) / 2;
+	        if ((endIndex - startIndex) < NON_PARALLEL_SORT_LENGTH) {
+	            // You might call this cheating, but if you continue going
+	            // smaller and smaller, you get an exponential amount of
+	            // new MergeActions, which makes the code slower. The sort
+	            // still works if you instead have the if statement be
+	            // if (rangeLength <= 1) return;
+	        	try {
+					parallelSort(listToSort, startIndex, endIndex);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	            return;
+	        }
 			
-			try {
-				executorService.submit(new InnerMergeSort(listToSort, startIndex, midpoint)).get();
-				executorService.submit(new InnerMergeSort(listToSort, midpoint + 1, endIndex)).get();
-			} catch (InterruptedException | ExecutionException e) {
-				e.printStackTrace();
-			}
-
+			// get midpoint then identify left & right half to sort, finally merge values in the end
+			int midpoint = (int)Math.floor((startIndex + endIndex) / 2);
+			
+			invokeAll(new InnerMergeSort(listToSort, startIndex, midpoint), new InnerMergeSort(listToSort, midpoint + 1, endIndex));
 			merge(listToSort, startIndex, midpoint, endIndex);
-			executorService.shutdownNow();
-			executorService.awaitTermination();
 		}
-		
-	}*/
+	}
+	
+//	private class Sequential
 	
 	private void parallelSort(Integer[] listToSort, int startIndex, int endIndex) throws InterruptedException{
 		if(endIndex - startIndex < 1){

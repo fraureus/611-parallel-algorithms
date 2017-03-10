@@ -8,7 +8,6 @@ public class ParallelMergeSort4 extends SequentialMergeSort{
 		}
 		
 //		System.out.println("[Sequential Merge Sort] Initialization...");
-		
 		parallelSort(listToSort, 0, listToSort.length-1);
 //		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
 	}

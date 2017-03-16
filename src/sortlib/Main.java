@@ -9,6 +9,8 @@ import utils.GeneralUtils;
 
 /**
  *	@author Justin R. & Kristine A.
+ *	@repository [NOTE] The same project can be found under the github repo: 
+ *				https://github.com/fraureus/611-parallel-algorithms
  *	@spec In this project, the developers are required to create 
  *		a program that sorts a x-element array of numbers using any of
  *		popular sorting algorithms. There should be two programs.

@@ -6,6 +6,32 @@ import java.util.HashMap;
 
 import utils.GeneralUtils;
 
+
+/**
+ *	@author Justin R. & Kristine A.
+ *	@spec In this project, the developers are required to create 
+ *		a program that sorts a x-element array of numbers using any of
+ *		popular sorting algorithms. There should be two programs.
+ *
+ *	(1) A program that implements the sorting algorithm using sequential programming
+ *	(2) A program that implements the sorting algorithm using parallel programming
+ *
+ *	The array to be sorted should have random x elements containing numbers 1 to y.	
+ *
+ *	@implementation
+ *		Algorithm: Merge Sort
+ *		Variants: Sequential, Parallel with 2 threads, Parallel with 4 threads
+ *		Test Case: Best, Average, Worst Case
+ *		Range: 1 to 1_000_000 (million)
+ *		N-elements: 
+ *		{1_000, 5_000, 
+		10_000, 50_000, 
+		100_000, 500_000, 
+		1_000_000, 5_000_000, 
+		10_000_000, 50_000_000}
+		Max Iterations of Experiment: 50
+ */
+
 public class Main {
 	
 	/**

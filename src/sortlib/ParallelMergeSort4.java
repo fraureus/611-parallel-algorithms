@@ -2,16 +2,18 @@ package sortlib;
 
 public class ParallelMergeSort4 extends SequentialMergeSort{
 	
+	// helper method to initialize actual parallel sort
 	public void sort(Integer[] listToSort) throws Exception{
 		if(listToSort.length <= 1){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
 		}
 		
-//		System.out.println("[Sequential Merge Sort] Initialization...");
+		System.out.println("[Parallel Merge Sort 4] Initialization...");
 		parallelSort(listToSort, 0, listToSort.length-1);
-//		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
+		System.out.println("[Parallel Merge Sort 4] Sorting Complete!\n");
 	}
 	
+	// main parallel merge sort implementation with 4 threads
 	private void parallelSort(Integer[] listToSort, int startIndex, int endIndex) throws InterruptedException{
 		if(endIndex - startIndex < 1){
 			return;
@@ -63,6 +65,7 @@ public class ParallelMergeSort4 extends SequentialMergeSort{
 			e.printStackTrace();
 		}
 		
+		// call to parent merge routine using sentinels
 		merge(listToSort, startIndex, midpoint, endIndex);
 	}
 }

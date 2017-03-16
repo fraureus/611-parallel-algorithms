@@ -28,9 +28,16 @@ public class Main {
 	/**
 	 *  Private Settings
 	 */
+	// global setting to indicate whether to output results 
 	private static final boolean TO_PRINT = true;
+	
+	// global setting to indicate whether to save results or not
 	private static final boolean TO_SAVE = true;
-	private static final int MAX_ITER = 50;
+	
+	// Max number of times to repeat either of the scenario
+	private static final int MAX_ITER = 50; 
+	
+	// Number of initial iterations to trim (for removing misleading results)
 	private static final int TRIM_VALUE = 10;
 	
 	/**
@@ -55,69 +62,81 @@ public class Main {
 	private static final int[] tinyTestCases = {10, 20, 30, 40, 50};
 	private static final int[] defaultTestCases = {50_000, 100_000, 500_000, 1_000_000};
 	private static final int[] extremeTestCases = {5_000_000, 10_000_000, 50_000_000, 100_000_000, 500_000_000};
-	private static final int[] finalTestCases = { 1_000, 5_000, 
+	private static final int[] finalTestCases = 
+		{1_000, 5_000, 
 		10_000, 50_000, 
 		100_000, 500_000, 
 		1_000_000, 5_000_000, 
 		10_000_000, 50_000_000};
 	
 	
+	/**
+	 * 	Starting point of main experiment
+	 */
 	public static void main(String[] args) {
-		int[] chosenTestCases = finalTestCases;
+		// plug in desired test case here
+		int[] chosenTestCases = finalTestCases; 
+		// plug in scenario to run here: [BEST_CASE, AVERAGE_CASE, WORST_CASE]
+		int chosenScenario = AVERAGE_CASE; 
 		
-		// BEST CASE SECTION
-//		init();
-//		for (int i = 0; i < MAX_ITER; i++) {
-//			testCaseIter = i;
-//			System.out.println(HBAR + "\n");
-//			System.out.println(BEST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
-//			executeTestCases(chosenTestCases, BEST_CASE, BEST_CASE_STR);
-//		}
-//		try {
-//			if (TO_SAVE)
-//				/*
-//				 * FYI: Second argument takes in an optional filename if it is
-//				 * blank, the file would be saved with a generated filename
-//				 * else, it uses your provided filename
-//				 */
-//				util.saveResultsToCsvFile(resultsMap, "50_iterations_best_exe", MAX_ITER, 0);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-
-		// AVERAGE CASE SECTION
-		init();
-		for (int i = 0; i < MAX_ITER; i++) {
-			testCaseIter = i;
-			System.out.println(HBAR + "\n");
-			System.out.println(AVERAGE_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
-			executeTestCases(chosenTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
+		if(chosenScenario == BEST_CASE){
+			// BEST CASE SECTION
+			init();
+			for (int i = 0; i < MAX_ITER; i++) {
+				testCaseIter = i;
+				System.out.println(HBAR + "\n");
+				System.out.println(BEST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+				executeTestCases(chosenTestCases, BEST_CASE, BEST_CASE_STR);
+			}
+			try {
+				if (TO_SAVE)
+					/*
+					 * FYI: Second argument takes in an optional filename if it is
+					 * blank, the file would be saved with a generated filename
+					 * else, it uses your provided filename
+					 */
+					util.saveResultsToCsvFile(resultsMap, "50_iterations_best_exe", MAX_ITER, 0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		try {
-			if (TO_SAVE)
-				util.saveResultsToCsvFile(resultsMap, "50_iterations_avg_exe", MAX_ITER, 0);
-		} catch (IOException e) {
-			e.printStackTrace();
+		else if(chosenScenario == AVERAGE_CASE){
+			// AVERAGE CASE SECTION
+			init();
+			for (int i = 0; i < MAX_ITER; i++) {
+				testCaseIter = i;
+				System.out.println(HBAR + "\n");
+				System.out.println(AVERAGE_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+				executeTestCases(chosenTestCases, AVERAGE_CASE, AVERAGE_CASE_STR);
+			}
+			try {
+				if (TO_SAVE)
+					util.saveResultsToCsvFile(resultsMap, "50_iterations_avg_exe", MAX_ITER, 0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-
-		// WORST CASE SECTION
-//		init();
-//		for (int i = 0; i < MAX_ITER; i++) {
-//			testCaseIter = i;
-//			System.out.println(HBAR + "\n");
-//			System.out.println(WORST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
-//			executeTestCases(chosenTestCases, WORST_CASE, WORST_CASE_STR);
-//		}
-//		try {
-//			if (TO_SAVE)
-//				util.saveResultsToCsvFile(resultsMap, "50_iterations_worst_exe", MAX_ITER, 0);
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		else{
+			// WORST CASE SECTION
+			init();
+			for (int i = 0; i < MAX_ITER; i++) {
+				testCaseIter = i;
+				System.out.println(HBAR + "\n");
+				System.out.println(WORST_CASE_STR + "\n\nIteration: " + (i + 1) + "\n\n");
+				executeTestCases(chosenTestCases, WORST_CASE, WORST_CASE_STR);
+			}
+			try {
+				if (TO_SAVE)
+					util.saveResultsToCsvFile(resultsMap, "50_iterations_worst_exe", MAX_ITER, 0);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}	
+		}
 		
-		System.out.println("[-END-] Test Experiment Done!");
+		System.out.println("[-END-] Test Experiment Done! " + MAX_ITER + " iterations performed.");
 	}
 	
+	// initialization & reset method
 	private static void init(){
 		util = new GeneralUtils();
 		seqMerge = new SequentialMergeSort();
@@ -133,6 +152,8 @@ public class Main {
 		resultsMap.put("START_TIME", experimentStartTime);
 	}
 	
+	// execute test script for chosen test case scenario
+	// generate and run algorithms on test data
 	private static void executeTestCases(int[] testCases, int mode, String testName){
 		testCaseNum = 0;
 		System.out.println(testName + ", hajime!\n");
@@ -153,6 +174,7 @@ public class Main {
 		System.out.println(testName + " are done.\n");
 	}
 	
+	// run algorithm on test case data and save results in a HashMap resultsMap
 	private static void runTestCase(Integer[] testCase, String testCaseName, int sorter, int mode){
 		long startTime =  0L, runTime = 0L;
 		String lblPrefix = "";
@@ -197,6 +219,7 @@ public class Main {
 			System.out.println("[DONE SORTING] Output:\n" + util.prettifyOutput(testCase, 50));
 	}
 	
+	// helper method to return string representation of test case scenario (mode)
 	private static String getLabel(int mode){
 		if(mode == 0){
 			return BEST_CASE_LBL;
@@ -206,5 +229,4 @@ public class Main {
 			return WORST_CASE_LBL;
 		}
 	}
-
 }

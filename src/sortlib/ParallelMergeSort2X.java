@@ -1,11 +1,10 @@
 package sortlib;
 
-import java.util.Arrays;
 import java.util.concurrent.*;
 
 public class ParallelMergeSort2X extends SequentialMergeSort {
 	
-	
+	// helper method to initialize ForkJoinPool and merge sorting process
 	public void sort(Integer[] listToSort) throws Exception{
 		if(listToSort.length <= 1 || listToSort == null){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
@@ -13,22 +12,21 @@ public class ParallelMergeSort2X extends SequentialMergeSort {
 		
 		ForkJoinPool esPool = new ForkJoinPool();	
 		
-//		System.out.println("[Sequential Merge Sort] Initialization...");
+		System.out.println("[Parallel Merge Sort - Fork] Initialization...");
 		esPool.invoke(new InnerMergeSort(listToSort, true));
-//		parallelSort(listToSort, 0, listToSort.length-1);
-//		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
+		System.out.println("[Parallel Merge Sort - Fork] Sorting Complete!\n");
 	}
 	
+	// inner class to support recursive calls to parallel merge sort via ForkJoinPool
 	private class InnerMergeSort extends RecursiveAction{
 		private boolean isOneLevelDeep = true;
 		private Integer[] listToSort;
-		private static final int NON_PARALLEL_SORT_LENGTH = 100_000;
-		
 		public InnerMergeSort(Integer[] listToSort, boolean isOneLevelDeep){
 			this.listToSort = listToSort;
 			this.isOneLevelDeep = isOneLevelDeep;
 		}
 		
+		// normal merging process defined in ForkJoinPool's compute()
 		@Override
 		protected void compute() {
 			if(listToSort.length <= 1){
@@ -47,6 +45,7 @@ public class ParallelMergeSort2X extends SequentialMergeSort {
 			}
 		}
 		
+		// returns the left half
 		private Integer[] leftHalf(Integer[] array) {
 			int size1 = array.length / 2;
 			Integer[] left = new Integer[size1];
@@ -56,6 +55,7 @@ public class ParallelMergeSort2X extends SequentialMergeSort {
 			return left;
 		}
 		
+		// returns the right half
 		private Integer[] rightHalf(Integer[] array) {
 			int size1 = array.length / 2;
 			int size2 = array.length - size1;
@@ -67,6 +67,7 @@ public class ParallelMergeSort2X extends SequentialMergeSort {
 		}
 	}
 	
+	// merge routine specific for this implementation
 	public static void merge(Integer[] left, Integer[] right, Integer[] a) {
 		int i1 = 0;
 		int i2 = 0;
@@ -79,42 +80,5 @@ public class ParallelMergeSort2X extends SequentialMergeSort {
 				i2++;
 			}
 		}
-	}
-	
-	private void parallelSort(Integer[] listToSort, int startIndex, int endIndex) throws InterruptedException{
-		if(endIndex - startIndex < 1){
-			return;
-		}
-		
-		// get midpoint then identify left & right half to sort, finally merge values in the end
-		int midpoint = (int)Math.floor(startIndex + endIndex) / 2;
-		
-		// less costly since only two main threads are used as seen below
-		// cheaper recursion calls are made to the sequential version of merge sort
-		Thread leftThread = new Thread(new Runnable(){
-			public void run(){
-				sort(listToSort, startIndex, midpoint);
-			}
-		});
-		
-		Thread rightThread = new Thread(new Runnable(){
-			public void run(){
-				sort(listToSort, midpoint + 1, endIndex);
-			}
-		});
-		
-		// begin sorting both halves simultaneously
-		leftThread.start();
-		rightThread.start();
-		
-		// allow both threads to finish until completion
-		try {
-			leftThread.join();
-			rightThread.join();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		merge(listToSort, startIndex, midpoint, endIndex);
 	}
 }

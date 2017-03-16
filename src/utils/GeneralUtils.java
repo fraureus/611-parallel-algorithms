@@ -8,17 +8,14 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 public class GeneralUtils{
-	private static final String BLANK = " ";
 	private static final String EMPTY_STRING = "";
 	private static final String NEW_LINE = "\n";
 	private static final String TAB = "\t";
 	
-	// generate test case based on given parameters
+	// Generate test case based on given parameters
 	public Integer[] generateTestCase(int testSize, int maxRange, boolean includeOffset, int mode){
 		Integer[] testCase = new Integer[testSize];
 		int offset = includeOffset ? 0 : 1;
@@ -31,14 +28,7 @@ public class GeneralUtils{
 			testCase[i] = rand.nextInt(maxRange) + offset;
 		}
 		
-//		System.out.println("generateTestCase(): Done creating test cases!\n");
-		
-	    Comparator<Integer> comparator = new Comparator<Integer>() {
-	        @Override
-	        public int compare(Integer o1, Integer o2) {
-	            return o2.compareTo(o1);
-	        }
-	    };
+		System.out.println("generateTestCase(): Done creating test cases!\n");
 		
 		if(mode == 0){
 			Arrays.sort(testCase);
@@ -83,12 +73,12 @@ public class GeneralUtils{
 		return false;
 	}
 	
-	// computes time difference
+	// Computes time difference
 	public long getTimeDifference(long startTime){
 		return System.currentTimeMillis() - startTime;
 	}
 	
-	// save results to a csv file
+	// Save results to a csv file
 	/**
 	 * @param hashMap : hashmap containing the results to be written to file
 	 * @param optionalFileName : if blank, results are saved in a file with a auto-generated name

@@ -3,16 +3,19 @@ package sortlib;
 public class SequentialMergeSort {
 	protected Integer[] listToSort;
 	
+	// helper method to initialize main sequential sort
 	public void sort(Integer[] listToSort) throws Exception{
 		if(listToSort.length <= 1){
 			throw new IllegalArgumentException("[WARNING] List has less than or equal to one item.");
 		}
 		
-//		System.out.println("[Sequential Merge Sort] Initialization...");
+		System.out.println("[Sequential Merge Sort] Initialization...");
 		sort(listToSort, 0, listToSort.length-1);
-//		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
+		System.out.println("[Sequential Merge Sort] Sorting Complete!\n");
 	}
 	
+	// main sequential merge sort implementation
+	// sorts left half first, before starting the right half
 	protected void sort(Integer[] listToSort, int startIndex, int endIndex){
 		if(endIndex - startIndex < 1){
 			return;
